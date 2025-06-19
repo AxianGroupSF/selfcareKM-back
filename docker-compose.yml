@@ -1,0 +1,45 @@
+version: '3'
+
+services:
+  db:
+    image: mariadb:11.4
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: selfcareKM
+      # MYSQL_USER: root
+      MYSQL_PASSWORD: root
+    command: --local-infile=1
+    ports:
+      - "3306:3306"
+    volumes:
+      - db_data:/var/lib/mysql
+      - ./my.cnf:/etc/mysql/conf.d/my.cnf
+
+  adminer:
+      image: adminer
+      restart: always
+      ports:
+        - "8081:8080"
+
+
+  phpmyadmin:
+    image: phpmyadmin/phpmyadmin
+    restart: always
+    ports:
+      - "8080:80"
+    environment:
+      PMA_HOST: db
+      MYSQL_ROOT_PASSWORD: root
+      # MYSQL_USER: root
+      MYSQL_PASSWORD:
+      UPLOAD_LIMIT: 10000000M
+
+
+volumes:
+  db_data:
+
+
+
+
+
