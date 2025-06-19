@@ -1,6 +1,6 @@
 # SELFCARE COMORES
 
-TELCO sELFCARE
+Selfcare B2B KM is a management application dedicated to the supervision and administration of mobile telephony offers for professional fleets. It enables users to autonomously manage (selfcare) subscriptions, usage, and options related to SMS and voice services, while providing a clear interface for management teams.
 
 ## Installation
 
