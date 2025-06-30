@@ -1,7 +1,6 @@
 <?php
-namespace App\Security;
+namespace App\Provider;
 
-use App\Constante\Constants;
 use App\Constante\SelfcareConst;
 use App\Entity\User;
 use App\Exception\GeneralException;
@@ -31,7 +30,7 @@ readonly class SelfcareLdapUserProvider implements UserProviderInterface
 
     public function refreshUser(UserInterface $user): UserInterface
     {
-        $user = $this->entityManager->getRepository(User::class)->findOneBy(['username' => $user->getUserIdentifier()]);
+        $user = $this->entityManager->getRepository(User::class)->findOneBy(['login' => $user->getUserIdentifier()]);
 
         if (! $user instanceof User) {
             throw new UnsupportedUserException(sprintf('Invalid user class "%s".', get_class($user)));
@@ -55,11 +54,11 @@ readonly class SelfcareLdapUserProvider implements UserProviderInterface
     public function loadUserByIdentifier(string $identifier): UserInterface
     {
         try {
-            $user = $this->userRepository->findOneBy(['username' => $identifier, 'isEnabled' => 1]);
+            $user = $this->userRepository->findOneBy(['login' => $identifier]);
             if (! $user instanceof User) {
                 throw new NotFoundHttpException(SelfcareConst::INVALID_CREDENTIALS);
             }
-            $request  = $this->requestStack->getCurrentRequest();
+            $request = $this->requestStack->getCurrentRequest();
 
             if ($user->isLdapUser() && $request->getContent()) {
                 $data = json_decode($request->getContent(), true);

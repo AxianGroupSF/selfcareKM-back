@@ -38,6 +38,9 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column]
     private ?string $password = null;
 
+    #[ORM\Column(nullable: true)]
+    private ?bool $isLdapUser = true;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -146,5 +149,17 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function getUserIdentifier(): string
     {
         return (string) $this->login;
+    }
+
+        public function isLdapUser(): ?bool
+    {
+        return $this->isLdapUser;
+    }
+
+    public function setLdapUser(?bool $isLdapUser): static
+    {
+        $this->isLdapUser = $isLdapUser;
+
+        return $this;
     }
 }

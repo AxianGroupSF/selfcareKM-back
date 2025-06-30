@@ -21,9 +21,9 @@ security:
             pattern: ^/(_(profiler|wdt)|css|images|js)/
             security: false
         main:
-            lazy: true
-            provider: users_in_memory
-
+            # lazy: true
+            # provider: users_in_memory
+            provider: app_users_provider
             # activate different ways to authenticate
             # https://symfony.com/doc/current/security.html#the-firewall
 
