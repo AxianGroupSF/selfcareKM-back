@@ -3,14 +3,14 @@
 namespace App\Entity;
 
 use App\Repository\UserRepository;
-use App\Traits\CreatedTimeTrackableTrait;
+use App\Trait\CreatedTimeTrackableTrait;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: UserRepository::class)]
 class User
 {
     use CreatedTimeTrackableTrait;
-    
+
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
