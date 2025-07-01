@@ -1,12 +1,15 @@
 <?php
 namespace App\Entity;
 
+use Doctrine\ORM\Mapping as ORM;
 use ApiPlatform\Metadata\ApiResource;
 use App\Repository\CompanyRepository;
 use App\Trait\CreatedOnlyTimeTrackableTrait;
-use Doctrine\ORM\Mapping as ORM;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
 #[ORM\Entity(repositoryClass: CompanyRepository::class)]
+#[UniqueEntity('name', message: 'Ce nom est déjà utilisé.')]
+#[UniqueEntity('cugNumber', message: 'Cet code CUG est déjà utilisé.')]
 #[ApiResource]
 class Company
 {
@@ -17,13 +20,13 @@ class Company
     #[ORM\Column]
     private ?int $id = null;
 
-    #[ORM\Column(length: 255)]
+    #[ORM\Column(length: 255, unique: true)]
     private ?string $name = null;
 
     #[ORM\Column(length: 255)]
     private ?string $adress = null;
 
-    #[ORM\Column(length: 255)]
+    #[ORM\Column(length: 255, unique: true)]
     private ?string $cugNumber = null;
 
     #[ORM\Column]
