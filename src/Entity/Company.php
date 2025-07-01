@@ -1,9 +1,13 @@
 <?php
 namespace App\Entity;
 
+use ApiPlatform\Metadata\Get;
+use ApiPlatform\Metadata\Post;
+use ApiPlatform\Metadata\Patch;
 use Doctrine\ORM\Mapping as ORM;
 use ApiPlatform\Metadata\ApiResource;
 use App\Repository\CompanyRepository;
+use ApiPlatform\Metadata\GetCollection;
 use App\Trait\CreatedOnlyTimeTrackableTrait;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
@@ -11,6 +15,12 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 #[UniqueEntity('name', message: 'Ce nom est déjà utilisé.')]
 #[UniqueEntity('cugNumber', message: 'Ce code CUG est déjà utilisé.')]
 #[ApiResource(
+    operations: [
+        new Get(),
+        new GetCollection(),
+        new Post(),
+        new Patch()
+    ],
     inputFormats: ['json' => ['application/json']],
     outputFormats: ['jsonld' => ['application/ld+json'], 'json' => ['application/json']],
 )]
