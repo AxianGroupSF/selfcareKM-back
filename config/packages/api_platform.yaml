@@ -1,5 +1,5 @@
 api_platform:
-    title: Selfcare B2B KM
+    title: Selfcare B2B KM (API)
     version: 1.0.0
     defaults:
         stateless: true
