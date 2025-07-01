@@ -1,12 +1,13 @@
 <?php
-
 namespace App\Entity;
 
+use ApiPlatform\Metadata\ApiResource;
 use App\Repository\CompanyRepository;
 use App\Trait\CreatedOnlyTimeTrackableTrait;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: CompanyRepository::class)]
+#[ApiResource]
 class Company
 {
     use CreatedOnlyTimeTrackableTrait;
