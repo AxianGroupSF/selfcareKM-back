@@ -19,7 +19,7 @@ class CustomOpenApiCompanyFactory implements OpenApiFactoryInterface
 
         $pathItem = new PathItem(
             ref: 'Toggle  company status',
-            get: new Operation(
+            put: new Operation(
                 operationId: 'changeCompanyStatusById',
                 tags: ['Company'],
                 responses: [
