@@ -13,7 +13,7 @@ use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 #[AsCommand(
-    name: 'app:selfcare:create:user',
+    name: 'selfcare:create:user',
     description: 'Create an user',
 )]
 class CreateUserCommand extends Command
