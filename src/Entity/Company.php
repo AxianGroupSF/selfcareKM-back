@@ -10,7 +10,10 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 #[ORM\Entity(repositoryClass: CompanyRepository::class)]
 #[UniqueEntity('name', message: 'Ce nom est déjà utilisé.')]
 #[UniqueEntity('cugNumber', message: 'Ce code CUG est déjà utilisé.')]
-#[ApiResource]
+#[ApiResource(
+    inputFormats: ['json' => ['application/json']],
+    outputFormats: ['jsonld' => ['application/ld+json'], 'json' => ['application/json']],
+)]
 class Company
 {
     use CreatedOnlyTimeTrackableTrait;
