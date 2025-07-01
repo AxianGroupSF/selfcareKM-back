@@ -2,10 +2,12 @@
 namespace App\Entity;
 
 use ApiPlatform\Metadata\Get;
+use ApiPlatform\Metadata\Put;
 use ApiPlatform\Metadata\Post;
 use ApiPlatform\Metadata\Patch;
 use Doctrine\ORM\Mapping as ORM;
 use ApiPlatform\Metadata\ApiResource;
+use App\Controller\CompanyController;
 use App\Repository\CompanyRepository;
 use ApiPlatform\Metadata\GetCollection;
 use App\Trait\CreatedOnlyTimeTrackableTrait;
@@ -19,7 +21,14 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
         new Get(),
         new GetCollection(),
         new Post(),
-        new Patch()
+        new Patch(),
+        new Put(
+            uriTemplate: '/company/{action}/{id}',
+            controller: CompanyController::class . '::statusToggle',
+            read: true,
+            deserialize: false,
+            name: 'status_toogle_company'
+        ),
     ],
     inputFormats: ['json' => ['application/json']],
     outputFormats: ['jsonld' => ['application/ld+json'], 'json' => ['application/json']],
