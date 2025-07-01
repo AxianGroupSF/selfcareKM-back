@@ -27,7 +27,7 @@ class CustomOpenApiCompanyFactory implements OpenApiFactoryInterface
                         'description' => 'Statut société modifié',
                     ],
                 ],
-                summary: 'Active ou désactive une entreprise (enable/disable) via un appel POST.',
+                summary: 'Activates or deactivates a company (enable/disable) via a PUT request.',
                 parameters: [
                     [
                         'name'        => 'action',
