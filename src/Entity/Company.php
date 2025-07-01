@@ -9,7 +9,7 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
 #[ORM\Entity(repositoryClass: CompanyRepository::class)]
 #[UniqueEntity('name', message: 'Ce nom est déjà utilisé.')]
-#[UniqueEntity('cugNumber', message: 'Cet code CUG est déjà utilisé.')]
+#[UniqueEntity('cugNumber', message: 'Ce code CUG est déjà utilisé.')]
 #[ApiResource]
 class Company
 {
