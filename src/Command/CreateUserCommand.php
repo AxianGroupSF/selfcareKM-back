@@ -59,6 +59,7 @@ class CreateUserCommand extends Command
             ->setEmail($email)
             ->setRoles(['ROLE_ADMIN'])
             ->setPhone($phone)
+            ->setLdapUser(false)
             ->setCreatedAt(new \DateTimeImmutable());
 
         // Validate the User entity
