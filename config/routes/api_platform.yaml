@@ -2,3 +2,8 @@ api_platform:
     resource: .
     type: api_platform
     prefix: /api
+
+check_stock:
+    path: /api/company/{action}/{id}
+    controller: App\Controller\CompanyController::statusToggle
+    methods: [PUT]

@@ -22,13 +22,6 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
         new GetCollection(),
         new Post(),
         new Patch(),
-        new Put(
-            uriTemplate: '/company/{action}/{id}',
-            controller: CompanyController::class . '::statusToggle',
-            read: true,
-            deserialize: false,
-            name: 'status_toogle_company'
-        ),
     ],
     inputFormats: ['json' => ['application/json']],
     outputFormats: ['jsonld' => ['application/ld+json'], 'json' => ['application/json']],
