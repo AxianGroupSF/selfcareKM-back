@@ -57,7 +57,7 @@ class CreateUserCommand extends Command
             ->setStatus(1)
             ->setLogin($login)
             ->setEmail($email)
-            ->setRoles(['ROLE_USER'])
+            ->setRoles(['ROLE_ADMIN'])
             ->setPhone($phone);
 
         // Validate the User entity
