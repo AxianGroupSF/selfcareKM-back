@@ -3,7 +3,7 @@ namespace App\Exception;
 
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 
-final class InvalidCompanyActionException extends BadRequestHttpException
+class InvalidCompanyActionException extends BadRequestHttpException
 {
     public function __construct(string $action)
     {
