@@ -1,16 +1,29 @@
 <?php
 namespace App\Entity;
 
-use Doctrine\ORM\Mapping as ORM;
+use ApiPlatform\Metadata\ApiResource;
+use ApiPlatform\Metadata\Get;
+use ApiPlatform\Metadata\GetCollection;
+use ApiPlatform\Metadata\Put;
 use App\Repository\UserRepository;
 use App\Trait\CreatedTimeTrackableTrait;
-use Symfony\Component\Security\Core\User\UserInterface;
+use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
+use Symfony\Component\Security\Core\User\UserInterface;
 
 #[ORM\Entity(repositoryClass: UserRepository::class)]
 #[UniqueEntity('email', message: 'Cet email est déjà utilisé.')]
 #[UniqueEntity('login', message: 'Ce login est déjà utilisé.')]
+#[ApiResource(
+    operations: [
+        new Get(),
+        new GetCollection(),
+        new Put(),
+    ],
+    inputFormats: ['json' => ['application/json']],
+    outputFormats: ['jsonld' => ['application/ld+json'], 'json' => ['application/json']],
+)]
 class User implements UserInterface, PasswordAuthenticatedUserInterface
 {
     use CreatedTimeTrackableTrait;
@@ -154,7 +167,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return (string) $this->login;
     }
 
-        public function isLdapUser(): ?bool
+    public function isLdapUser(): ?bool
     {
         return $this->isLdapUser;
     }
