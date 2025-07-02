@@ -4,7 +4,7 @@ namespace App\Entity;
 use ApiPlatform\Metadata\ApiResource;
 use ApiPlatform\Metadata\Get;
 use ApiPlatform\Metadata\GetCollection;
-use ApiPlatform\Metadata\Put;
+use ApiPlatform\Metadata\Patch;
 use App\Repository\UserRepository;
 use App\Trait\CreatedTimeTrackableTrait;
 use Doctrine\ORM\Mapping as ORM;
@@ -19,7 +19,7 @@ use Symfony\Component\Security\Core\User\UserInterface;
     operations: [
         new Get(),
         new GetCollection(),
-        new Put(),
+        new Patch(),
     ],
     inputFormats: ['json' => ['application/json']],
     outputFormats: ['jsonld' => ['application/ld+json'], 'json' => ['application/json']],
