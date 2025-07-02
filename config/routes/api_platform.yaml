@@ -3,7 +3,13 @@ api_platform:
     type: api_platform
     prefix: /api
 
-check_stock:
+toggle_company:
     path: /api/company/{action}/{id}
     controller: App\Controller\CompanyController::toggleStatus
     methods: [PUT]
+
+toggle_user:
+    path: /api/user/{action}/{id}
+    controller: App\Controller\UserController::toggleStatus
+    methods: [PUT]
+
