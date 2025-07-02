@@ -1,16 +1,17 @@
 <?php
 namespace App\Entity;
 
-use ApiPlatform\Metadata\ApiResource;
 use ApiPlatform\Metadata\Get;
-use ApiPlatform\Metadata\GetCollection;
+use ApiPlatform\Metadata\Post;
 use ApiPlatform\Metadata\Patch;
-use App\Repository\UserRepository;
-use App\Trait\CreatedTimeTrackableTrait;
 use Doctrine\ORM\Mapping as ORM;
+use App\Repository\UserRepository;
+use ApiPlatform\Metadata\ApiResource;
+use ApiPlatform\Metadata\GetCollection;
+use App\Trait\CreatedTimeTrackableTrait;
+use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
-use Symfony\Component\Security\Core\User\UserInterface;
 
 #[ORM\Entity(repositoryClass: UserRepository::class)]
 #[UniqueEntity('email', message: 'Cet email est déjà utilisé.')]
@@ -19,6 +20,7 @@ use Symfony\Component\Security\Core\User\UserInterface;
     operations: [
         new Get(),
         new GetCollection(),
+        new Post(),
         new Patch(),
     ],
     inputFormats: ['json' => ['application/json']],
