@@ -11,23 +11,23 @@ services:
       MYSQL_PASSWORD: root
     command: --local-infile=1
     ports:
-      - "3306:3306"
+      - "3307:3306"
     volumes:
-      - db_data:/var/lib/mysql
+      - db_data_project2:/var/lib/mysql
       - ./my.cnf:/etc/mysql/conf.d/my.cnf
 
   adminer:
       image: adminer
       restart: always
       ports:
-        - "8081:8080"
+        - "8083:8080"
 
 
   phpmyadmin:
     image: phpmyadmin/phpmyadmin
     restart: always
     ports:
-      - "8080:80"
+      - "8082:80"
     environment:
       PMA_HOST: db
       MYSQL_ROOT_PASSWORD: root
@@ -37,7 +37,7 @@ services:
 
 
 volumes:
-  db_data:
+  db_data_project2:
 
 
 
