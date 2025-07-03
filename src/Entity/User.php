@@ -4,6 +4,8 @@ namespace App\Entity;
 use ApiPlatform\Metadata\Get;
 use ApiPlatform\Metadata\Post;
 use ApiPlatform\Metadata\Patch;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use App\Repository\UserRepository;
 use ApiPlatform\Metadata\ApiResource;
@@ -58,6 +60,17 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
     #[ORM\Column(nullable: true)]
     private ?bool $isLdapUser = true;
+
+    /**
+     * @var Collection<int, role>
+     */
+    #[ORM\ManyToMany(targetEntity: role::class, inversedBy: 'users')]
+    private Collection $userRole;
+
+    public function __construct()
+    {
+        $this->userRole = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -177,6 +190,30 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function setLdapUser(?bool $isLdapUser): static
     {
         $this->isLdapUser = $isLdapUser;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, role>
+     */
+    public function getUserRole(): Collection
+    {
+        return $this->userRole;
+    }
+
+    public function addUserRole(role $userRole): static
+    {
+        if (!$this->userRole->contains($userRole)) {
+            $this->userRole->add($userRole);
+        }
+
+        return $this;
+    }
+
+    public function removeUserRole(role $userRole): static
+    {
+        $this->userRole->removeElement($userRole);
 
         return $this;
     }

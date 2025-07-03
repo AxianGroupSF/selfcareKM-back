@@ -37,9 +37,16 @@ class Role
     #[ORM\ManyToMany(targetEntity: right::class, inversedBy: 'roles')]
     private Collection $rights;
 
+    /**
+     * @var Collection<int, User>
+     */
+    #[ORM\ManyToMany(targetEntity: User::class, mappedBy: 'userRole')]
+    private Collection $users;
+
     public function __construct()
     {
         $this->rights = new ArrayCollection();
+        $this->users = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -67,6 +74,33 @@ class Role
     public function removeRight(right $right): static
     {
         $this->rights->removeElement($right);
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, User>
+     */
+    public function getUsers(): Collection
+    {
+        return $this->users;
+    }
+
+    public function addUser(User $user): static
+    {
+        if (!$this->users->contains($user)) {
+            $this->users->add($user);
+            $user->addUserRole($this);
+        }
+
+        return $this;
+    }
+
+    public function removeUser(User $user): static
+    {
+        if ($this->users->removeElement($user)) {
+            $user->removeUserRole($this);
+        }
 
         return $this;
     }
