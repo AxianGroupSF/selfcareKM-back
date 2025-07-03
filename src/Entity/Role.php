@@ -1,14 +1,15 @@
 <?php
 namespace App\Entity;
 
-use ApiPlatform\Metadata\ApiResource;
+use App\Entity\Right;
 use ApiPlatform\Metadata\Get;
-use ApiPlatform\Metadata\GetCollection;
-use App\Repository\RoleRepository;
 use App\Trait\CodeLabelTrait;
-use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use App\Repository\RoleRepository;
+use ApiPlatform\Metadata\ApiResource;
+use ApiPlatform\Metadata\GetCollection;
+use Doctrine\Common\Collections\Collection;
+use Doctrine\Common\Collections\ArrayCollection;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
 #[ORM\Entity(repositoryClass: RoleRepository::class)]
@@ -32,9 +33,9 @@ class Role
     private ?int $id = null;
 
     /**
-     * @var Collection<int, right>
+     * @var Collection<int, Right>
      */
-    #[ORM\ManyToMany(targetEntity: right::class, inversedBy: 'roles')]
+    #[ORM\ManyToMany(targetEntity: Right::class, inversedBy: 'roles')]
     private Collection $rights;
 
     /**
@@ -62,7 +63,7 @@ class Role
         return $this->rights;
     }
 
-    public function addRight(right $right): static
+    public function addRight(Right $right): static
     {
         if (!$this->rights->contains($right)) {
             $this->rights->add($right);
@@ -71,7 +72,7 @@ class Role
         return $this;
     }
 
-    public function removeRight(right $right): static
+    public function removeRight(Right $right): static
     {
         $this->rights->removeElement($right);
 
