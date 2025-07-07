@@ -36,7 +36,7 @@ final class ExceptionListener
         // Complète la réponse
         $responseData = array_merge([
             'type'  => 'https://tools.ietf.org/html/rfc2616#section-10',
-            'title' => 'An error occurred',
+            'message' => $exception->getMessage(),
         ], $data ?? [
             'status' => 500,
             'detail' => 'Unhandled exception',
