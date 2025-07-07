@@ -42,7 +42,6 @@ class TestLdapConnectionCommand extends Command
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $username = $input->getArgument('username');
-        $password = $input->getArgument('password');
 
         try {
             $this->ldap->bind($this->parameterBag->get('ldap_search_dn'), $this->parameterBag->get('ldap_search_password'));

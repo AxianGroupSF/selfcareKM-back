@@ -1,13 +1,17 @@
 <?php
 namespace App\Exception;
 
-use Symfony\Component\HttpFoundation\Response;
-use Throwable;
-
-class GeneralException extends \Exception
+class GeneralException extends \RuntimeException
 {
-    public function __construct(string $message = "", int $code = Response::HTTP_BAD_REQUEST, ?Throwable $previous = null)
+    public function __construct(
+        string $message,
+        private int $statusCode = 500
+    ) {
+        parent::__construct($message, $statusCode);
+    }
+
+    public function getStatusCode(): int
     {
-        parent::__construct($message, $code, $previous);
+        return $this->statusCode;
     }
 }
