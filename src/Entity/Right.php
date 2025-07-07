@@ -1,19 +1,27 @@
 <?php
-
 namespace App\Entity;
 
+use ApiPlatform\Metadata\ApiResource;
+use ApiPlatform\Metadata\GetCollection;
+use App\Repository\RightRepository;
 use App\Trait\CodeLabelTrait;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
-use App\Repository\RightRepository;
 
 #[ORM\Entity(repositoryClass: RightRepository::class)]
 #[ORM\Table(name: '`right`')]
+#[ApiResource(
+    operations: [
+        new GetCollection(),
+    ],
+    inputFormats: ['json' => ['application/json']],
+    outputFormats: ['jsonld' => ['application/ld+json'], 'json' => ['application/json']],
+)]
 class Right
 {
     use CodeLabelTrait;
-    
+
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
@@ -45,7 +53,7 @@ class Right
 
     public function addRole(Role $role): static
     {
-        if (!$this->roles->contains($role)) {
+        if (! $this->roles->contains($role)) {
             $this->roles->add($role);
             $role->addRight($this);
         }
