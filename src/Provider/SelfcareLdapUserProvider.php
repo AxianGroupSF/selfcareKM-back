@@ -3,6 +3,7 @@ namespace App\Provider;
 
 use App\Constante\SelfcareConst;
 use App\Entity\User;
+use App\Exception\BadRequestException;
 use App\Exception\GeneralException;
 use App\Repository\UserRepository;
 use Doctrine\ORM\EntityManagerInterface;
@@ -56,7 +57,7 @@ readonly class SelfcareLdapUserProvider implements UserProviderInterface
         try {
             $user = $this->userRepository->findOneBy(['login' => $identifier]);
             if (! $user instanceof User) {
-                throw new NotFoundHttpException(SelfcareConst::INVALID_CREDENTIALS);
+                throw new BadRequestException(SelfcareConst::INVALID_CREDENTIALS);
             }
             $request = $this->requestStack->getCurrentRequest();
 
@@ -88,7 +89,7 @@ readonly class SelfcareLdapUserProvider implements UserProviderInterface
         $query   = $this->ldap->query($this->parameterBag->get('ldap_base_dn'), '(sAMAccountName=' . $identifier . ')');
         $results = $query->execute();
         if ($results->count() <= 0) {
-            throw new NotFoundHttpException(SelfcareConst::INVALID_CREDENTIALS);
+            throw new BadRequestException(SelfcareConst::INVALID_CREDENTIALS);
         }
 
         // Vérification du mot de passe via LDAP
