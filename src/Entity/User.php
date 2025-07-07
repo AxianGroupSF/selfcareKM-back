@@ -1,19 +1,19 @@
 <?php
 namespace App\Entity;
 
+use ApiPlatform\Metadata\ApiResource;
 use ApiPlatform\Metadata\Get;
-use ApiPlatform\Metadata\Post;
+use ApiPlatform\Metadata\GetCollection;
 use ApiPlatform\Metadata\Patch;
+use ApiPlatform\Metadata\Post;
+use App\Repository\UserRepository;
+use App\Trait\CreatedTimeTrackableTrait;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
-use App\Repository\UserRepository;
-use ApiPlatform\Metadata\ApiResource;
-use ApiPlatform\Metadata\GetCollection;
-use App\Trait\CreatedTimeTrackableTrait;
-use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
+use Symfony\Component\Security\Core\User\UserInterface;
 
 #[ORM\Entity(repositoryClass: UserRepository::class)]
 #[UniqueEntity('email', message: 'Cet email est déjà utilisé.')]
@@ -64,7 +64,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     /**
      * @var Collection<int, role>
      */
-    #[ORM\ManyToMany(targetEntity: role::class, inversedBy: 'users')]
+    #[ORM\ManyToMany(targetEntity: Role::class, inversedBy: 'users')]
     private Collection $userRole;
 
     public function __construct()
@@ -204,7 +204,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
     public function addUserRole(role $userRole): static
     {
-        if (!$this->userRole->contains($userRole)) {
+        if (! $this->userRole->contains($userRole)) {
             $this->userRole->add($userRole);
         }
 
