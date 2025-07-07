@@ -195,14 +195,14 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     }
 
     /**
-     * @return Collection<int, role>
+     * @return Collection<int, Role>
      */
     public function getUserRole(): Collection
     {
         return $this->userRole;
     }
 
-    public function addUserRole(role $userRole): static
+    public function addUserRole(Role $userRole): static
     {
         if (! $this->userRole->contains($userRole)) {
             $this->userRole->add($userRole);
@@ -211,7 +211,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this;
     }
 
-    public function removeUserRole(role $userRole): static
+    public function removeUserRole(Role $userRole): static
     {
         $this->userRole->removeElement($userRole);
 
