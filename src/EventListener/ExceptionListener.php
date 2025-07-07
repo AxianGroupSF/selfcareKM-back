@@ -22,7 +22,6 @@ final class ExceptionListener
     public function onKernelException(ExceptionEvent $event): void
     {
         $exception = $event->getThrowable();
-
         $this->logger->error($exception->getMessage(), ['exception' => $exception]);
 
         // Recherche du normalizer approprié
@@ -34,14 +33,17 @@ final class ExceptionListener
         }
 
         // Complète la réponse
-        $responseData = array_merge([
-            'type'  => 'https://tools.ietf.org/html/rfc2616#section-10',
-            'message' => $exception->getMessage(),
-        ], $data ?? [
+        $data ??= [
             'status' => 500,
             'detail' => 'Unhandled exception',
-        ]);
+        ];
 
-        $event->setResponse(new JsonResponse($responseData, $responseData['status']));
+        $responseData = [
+            'type'    => 'https://tools.ietf.org/html/rfc2616#section-10',
+            'title'   => 'An error occurred',
+            ...$data,
+        ];
+
+        $event->setResponse(new JsonResponse($responseData, $data['status']));
     }
 }

@@ -54,26 +54,21 @@ readonly class SelfcareLdapUserProvider implements UserProviderInterface
      */
     public function loadUserByIdentifier(string $identifier): UserInterface
     {
-        try {
-            $user = $this->userRepository->findOneBy(['login' => $identifier]);
-            if (! $user instanceof User) {
-                throw new BadRequestException(SelfcareConst::INVALID_CREDENTIALS);
-            }
-            $request = $this->requestStack->getCurrentRequest();
-
-            if ($user->isLdapUser() && $request->getContent()) {
-                $data = json_decode($request->getContent(), true);
-                if (is_array($data) && isset($data['password'])) {
-                    return $this->authenticateLdapUser($identifier, $data['password'], $user);
-                }
-            }
-
-            // Sinon, on vérifie son mot de passe stocké en base
-            return $user;
-        } catch (\Exception $e) {
-            $this->logger->warning($e->getMessage());
-            throw new GeneralException($e->getMessage());
+        $user = $this->userRepository->findOneBy(['login' => $identifier]);
+        if (! $user instanceof User) {
+            throw new BadRequestException(SelfcareConst::INVALID_CREDENTIALS);
         }
+        $request = $this->requestStack->getCurrentRequest();
+
+        if ($user->isLdapUser() && $request->getContent()) {
+            $data = json_decode($request->getContent(), true);
+            if (is_array($data) && isset($data['password'])) {
+                return $this->authenticateLdapUser($identifier, $data['password'], $user);
+            }
+        }
+
+        // Sinon, on vérifie son mot de passe stocké en base
+        return $user;
     }
 
     private function authenticateLdapUser(string $identifier, ?string $password, User $user): User

@@ -14,9 +14,10 @@ class BadRequestExceptionNormalizer implements ApiExceptionNormalizerInterface
 
     public function normalize(Throwable $exception): array
     {
+        /** @var BadRequestException $exception */
         return [
             'status' => 400,
-            'detail' => $exception->getMessage(),
+            'message' => $exception->getMessage(),
         ];
     }
 }
