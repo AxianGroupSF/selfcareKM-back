@@ -76,4 +76,58 @@ final class UserManager
 
         return $user;
     }
+
+    public function updateUser(User $user, UserInputDto $dto): User
+    {
+        $user->setLogin($dto->login)
+            ->setEmail($dto->email)
+            ->setPhone($dto->phone)
+            ->setStatus($dto->status)
+            ->setLdapUser($dto->isLdapUser ?? false);
+
+        if (! $user->isLdapUser()) {
+            if (! $dto->password) {
+                throw new BadRequestException('Un mot de passe est requis pour les utilisateurs non LDAP.');
+            }
+            $user->setPassword(
+                $this->passwordHasher->hashPassword($user, $dto->password)
+            );
+        } else {
+            $this->userService->checkIsldapUser($dto->login);
+            $user->setPassword(null);
+        }
+
+        // Validation
+        $violations = $this->validator->validate($user);
+        if (count($violations) > 0) {
+            $messages = [];
+            foreach ($violations as $violation) {
+                $messages[] = $violation->getMessage();
+            }
+            throw new BadRequestException(implode(' | ', $messages));
+        }
+
+        // Mise à jour des rôles/rights
+        $user->getUserRole()->clear();
+        foreach ($dto->roles as $roleData) {
+            $role = $this->em->getRepository(Role::class)->find($roleData['id']);
+            if (! $role) {
+                throw new BadRequestException("Ce rôle n'existe pas.");
+            }
+
+            foreach ($roleData['rights'] as $rightId) {
+                $right = $this->em->getRepository(Right::class)->find($rightId);
+                if (! $right) {
+                    throw new BadRequestException("Right inexistant.");
+                }
+                $role->addRight($right);
+            }
+
+            $user->addUserRole($role);
+        }
+
+        $this->em->flush();
+
+        return $user;
+    }
 }
