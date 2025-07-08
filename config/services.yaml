@@ -45,7 +45,7 @@ services:
     App\OpenApi\CustomOpenApiUserFactory:
         decorates: 'api_platform.openapi.factory'
 
-    App\Service\UserManager: ~
+    App\Manager\UserManager: ~
 
     # add more service definitions when explicit configuration is needed
     # please note that last definitions always *replace* previous ones

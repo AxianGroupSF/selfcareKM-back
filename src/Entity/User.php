@@ -1,19 +1,21 @@
 <?php
 namespace App\Entity;
 
-use ApiPlatform\Metadata\ApiResource;
+use App\Dto\UserInputDto;
 use ApiPlatform\Metadata\Get;
-use ApiPlatform\Metadata\GetCollection;
-use ApiPlatform\Metadata\Patch;
 use ApiPlatform\Metadata\Post;
-use App\Repository\UserRepository;
-use App\Trait\CreatedTimeTrackableTrait;
-use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\Common\Collections\Collection;
+use ApiPlatform\Metadata\Patch;
+use App\State\UserPostProcessor;
 use Doctrine\ORM\Mapping as ORM;
+use App\Repository\UserRepository;
+use ApiPlatform\Metadata\ApiResource;
+use ApiPlatform\Metadata\GetCollection;
+use App\Trait\CreatedTimeTrackableTrait;
+use Doctrine\Common\Collections\Collection;
+use Doctrine\Common\Collections\ArrayCollection;
+use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
-use Symfony\Component\Security\Core\User\UserInterface;
 
 #[ORM\Entity(repositoryClass: UserRepository::class)]
 #[UniqueEntity('email', message: 'Cet email est déjà utilisé.')]
@@ -22,7 +24,10 @@ use Symfony\Component\Security\Core\User\UserInterface;
     operations: [
         new Get(),
         new GetCollection(),
-        new Post(),
+        new Post(
+            input: UserInputDto::class,
+            processor: UserPostProcessor::class
+        ),
         new Patch(),
     ],
     inputFormats: ['json' => ['application/json']],
