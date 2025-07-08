@@ -1,10 +1,13 @@
 <?php
 namespace App\Trait;
 
+use App\Constante\SelfcareConst;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 trait CodeLabelTrait
 {
+    #[Groups([SelfcareConst::USER_READ, SelfcareConst::ROLE_READ])]
     #[ORM\Column(type: 'string', length: 255, unique: true)]
     private string $code;
 

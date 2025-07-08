@@ -4,18 +4,22 @@ namespace App\Entity;
 use App\Entity\Right;
 use ApiPlatform\Metadata\Get;
 use App\Trait\CodeLabelTrait;
+use App\Constante\SelfcareConst;
 use Doctrine\ORM\Mapping as ORM;
 use App\Repository\RoleRepository;
 use ApiPlatform\Metadata\ApiResource;
 use ApiPlatform\Metadata\GetCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\Common\Collections\ArrayCollection;
+use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
 #[ORM\Entity(repositoryClass: RoleRepository::class)]
 #[UniqueEntity('code', message: 'Ce code est déjà utilisé.')]
 #[UniqueEntity('label', message: 'Ce libellé  est déjà utilisé.')]
 #[ApiResource(
+    normalizationContext: ['groups' => [SelfcareConst::ROLE_READ]],
+    denormalizationContext: ['groups' => [SelfcareConst::ROLE_WRITE]],
     operations: [
         new Get(),
         new GetCollection(),
@@ -35,6 +39,7 @@ class Role
     /**
      * @var Collection<int, Right>
      */
+    #[Groups([SelfcareConst::USER_READ, SelfcareConst::ROLE_READ])]
     #[ORM\ManyToMany(targetEntity: Right::class, inversedBy: 'roles')]
     private Collection $rights;
 

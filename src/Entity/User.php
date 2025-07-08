@@ -10,17 +10,21 @@ use Doctrine\ORM\Mapping as ORM;
 use App\Repository\UserRepository;
 use ApiPlatform\Metadata\ApiResource;
 use ApiPlatform\Metadata\GetCollection;
+use App\Constante\SelfcareConst;
 use App\Trait\CreatedTimeTrackableTrait;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\Common\Collections\ArrayCollection;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
+use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 
 #[ORM\Entity(repositoryClass: UserRepository::class)]
 #[UniqueEntity('email', message: 'Cet email est déjà utilisé.')]
 #[UniqueEntity('login', message: 'Ce login est déjà utilisé.')]
 #[ApiResource(
+    normalizationContext: ['groups' => [SelfcareConst::USER_READ]],
+    denormalizationContext: ['groups' => [SelfcareConst::USER_WRITE]],
     operations: [
         new Get(),
         new GetCollection(),
@@ -31,7 +35,7 @@ use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
         new Patch(),
     ],
     inputFormats: ['json' => ['application/json']],
-    outputFormats: ['jsonld' => ['application/ld+json'], 'json' => ['application/json']],
+    outputFormats: ['json' => ['application/json'], 'jsonld' => ['application/ld+json']],
 )]
 class User implements UserInterface, PasswordAuthenticatedUserInterface
 {
@@ -42,15 +46,19 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column]
     private ?int $id = null;
 
+    #[Groups([SelfcareConst::USER_READ, SelfcareConst::USER_WRITE])]
     #[ORM\Column(length: 255, unique: true)]
     private ?string $login = null;
 
+    #[Groups([SelfcareConst::USER_READ, SelfcareConst::USER_WRITE])]
     #[ORM\Column(length: 255, unique: true)]
     private ?string $email = null;
 
+    #[Groups([SelfcareConst::USER_READ, SelfcareConst::USER_WRITE])]
     #[ORM\Column(length: 255)]
     private ?string $phone = null;
 
+    #[Groups([SelfcareConst::USER_READ, SelfcareConst::USER_WRITE])]
     #[ORM\Column]
     private ?bool $status = null;
 
@@ -60,15 +68,18 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     /**
      * @var string The hashed password
      */
+    #[Groups([SelfcareConst::USER_WRITE])]
     #[ORM\Column]
     private ?string $password = null;
 
+    #[Groups([SelfcareConst::USER_READ, SelfcareConst::USER_WRITE])]
     #[ORM\Column(nullable: true)]
     private ?bool $isLdapUser = true;
 
     /**
      * @var Collection<int, role>
      */
+    #[Groups([SelfcareConst::USER_READ])]
     #[ORM\ManyToMany(targetEntity: Role::class, inversedBy: 'users')]
     private Collection $userRole;
 
