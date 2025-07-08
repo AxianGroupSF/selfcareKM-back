@@ -36,6 +36,8 @@ final class UserManager
             $user->setPassword(
                 $this->passwordHasher->hashPassword($user, $dto->password)
             );
+        } else {
+            $user->setPassword(null);
         }
 
         $violations = $this->validator->validate($user);

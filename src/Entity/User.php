@@ -69,6 +69,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
      */
     #[Groups([SelfcareConst::USER_WRITE])]
     #[ORM\Column]
+    #[ORM\Column(nullable: true)]
     private ?string $password = null;
 
     #[Groups([SelfcareConst::USER_READ, SelfcareConst::USER_WRITE])]
@@ -171,7 +172,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this->password;
     }
 
-    public function setPassword(string $password): static
+    public function setPassword(?string $password): static
     {
         $this->password = $password;
 

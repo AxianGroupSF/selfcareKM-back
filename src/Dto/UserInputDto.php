@@ -6,12 +6,17 @@ use ApiPlatform\Metadata\ApiResource;
 use App\Constante\SelfcareConst;
 use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
+use Symfony\Component\Validator\Constraints\Expression;
 
 #[ApiResource(
     shortName: 'UserInput',
     description: 'Payload for creating a user',
     deprecated: false,
     denormalizationContext: ['groups' => [SelfcareConst::USER_WRITE]]
+)]
+#[Expression(
+    expression: "this.isLdapUser == true or this.password != null",
+    message: "Le mot de passe est obligatoire si l'utilisateur n'est pas LDAP."
 )]
 final class UserInputDto
 {
