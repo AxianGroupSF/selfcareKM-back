@@ -68,7 +68,6 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
      * @var string The hashed password
      */
     #[Groups([SelfcareConst::USER_WRITE])]
-    #[ORM\Column]
     #[ORM\Column(nullable: true)]
     private ?string $password = null;
 

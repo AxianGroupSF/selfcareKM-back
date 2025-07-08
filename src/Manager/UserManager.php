@@ -6,6 +6,7 @@ use App\Entity\Right;
 use App\Entity\Role;
 use App\Entity\User;
 use App\Exception\BadRequestException;
+use App\Service\UserService;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
@@ -16,6 +17,7 @@ final class UserManager
         private EntityManagerInterface $em,
         private UserPasswordHasherInterface $passwordHasher,
         private ValidatorInterface $validator,
+        private UserService $userService
     ) {}
 
     public function createUser(UserInputDto $dto): User
@@ -37,6 +39,7 @@ final class UserManager
                 $this->passwordHasher->hashPassword($user, $dto->password)
             );
         } else {
+            $this->userService->checkIsldapUser($dto->login);
             $user->setPassword(null);
         }
 

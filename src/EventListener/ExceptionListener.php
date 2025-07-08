@@ -40,6 +40,7 @@ final class ExceptionListener
 
         $responseData = [
             'type'    => 'https://tools.ietf.org/html/rfc2616#section-10',
+            'message' => $exception->getMessage(),
             'title'   => 'An error occurred',
             ...$data,
         ];
