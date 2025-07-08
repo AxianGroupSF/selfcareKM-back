@@ -18,11 +18,13 @@ final class UserManager
     public function createUser(UserInputDto $dto): User
     {
         $user = new User();
-        $user->setLogin($dto->login);
-        $user->setEmail($dto->email);
-        $user->setPhone($dto->phone);
-        $user->setStatus($dto->status);
-        $user->setLdapUser($dto->isLdapUser ?? false);
+        $user->setLogin($dto->login)
+                ->setEmail($dto->email)
+                ->setPhone($dto->phone)
+                ->setStatus($dto->status)
+                ->setLdapUser($dto->isLdapUser ?? false)
+                ->setRoles(['ROLE_USER'])
+                ->setCreatedAt(new \DateTimeImmutable());
 
         if (!$user->isLdapUser()) {
             if (!$dto->password) {
