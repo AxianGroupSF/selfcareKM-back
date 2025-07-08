@@ -32,7 +32,6 @@ use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
             input: UserInputDto::class,
             processor: UserPostProcessor::class
         ),
-        new Patch(),
     ],
     inputFormats: ['json' => ['application/json']],
     outputFormats: ['jsonld' => ['application/ld+json'], 'json' => ['application/json']],
