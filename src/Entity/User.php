@@ -35,7 +35,7 @@ use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
         new Patch(),
     ],
     inputFormats: ['json' => ['application/json']],
-    outputFormats: ['json' => ['application/json'], 'jsonld' => ['application/ld+json']],
+    outputFormats: ['jsonld' => ['application/ld+json'], 'json' => ['application/json']],
 )]
 class User implements UserInterface, PasswordAuthenticatedUserInterface
 {
