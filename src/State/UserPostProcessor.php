@@ -17,6 +17,17 @@ final class UserPostProcessor implements ProcessorInterface
      */
     public function process(mixed $data, Operation $operation, array $uriVariables = [], array $context = []): User
     {
+        if (! $data instanceof UserInputDto) {
+            throw new \InvalidArgumentException('Invalid data class');
+        }
+
+        /** @var ?User $existingUser */
+        $existingUser = $context['previous_data'] ?? null;
+
+        if ($existingUser) {
+            return $this->userManager->updateUser($existingUser, $data);
+        }
+
         return $this->userManager->createUser($data);
     }
 }

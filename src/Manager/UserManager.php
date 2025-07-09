@@ -85,16 +85,9 @@ final class UserManager
             ->setStatus($dto->status)
             ->setLdapUser($dto->isLdapUser ?? false);
 
-        if (! $user->isLdapUser()) {
-            if (! $dto->password) {
-                throw new BadRequestException('Un mot de passe est requis pour les utilisateurs non LDAP.');
-            }
-            $user->setPassword(
-                $this->passwordHasher->hashPassword($user, $dto->password)
-            );
-        } else {
+        // Vérifie l’existence de l’utilisateur LDAP mais n'altère plus le password
+        if ($user->isLdapUser()) {
             $this->userService->checkIsldapUser($dto->login);
-            $user->setPassword(null);
         }
 
         // Validation
