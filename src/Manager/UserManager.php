@@ -85,8 +85,11 @@ final class UserManager
             ->setStatus($dto->status)
             ->setLdapUser($dto->isLdapUser ?? false);
 
-        // Vérifie l’existence de l’utilisateur LDAP mais n'altère plus le password
-        if ($user->isLdapUser()) {
+        if (! $user->isLdapUser() && !empty($dto->password)) {
+            $user->setPassword(
+                $this->passwordHasher->hashPassword($user, $dto->password)
+            );
+        } else {
             $this->userService->checkIsldapUser($dto->login);
         }
 
