@@ -18,33 +18,33 @@ final class ExceptionListener
         private LoggerInterface $logger
     ) {}
 
-    #[AsEventListener(event: KernelEvents::EXCEPTION)]
-    public function onKernelException(ExceptionEvent $event): void
-    {
-        $exception = $event->getThrowable();
-        $this->logger->error($exception->getMessage(), ['exception' => $exception]);
+    // #[AsEventListener(event: KernelEvents::EXCEPTION)]
+    // public function onKernelException(ExceptionEvent $event): void
+    // {
+    //     $exception = $event->getThrowable();
+    //     $this->logger->error($exception->getMessage(), ['exception' => $exception]);
 
-        // Recherche du normalizer approprié
-        foreach ($this->normalizers as $normalizer) {
-            if ($normalizer->supports($exception)) {
-                $data = $normalizer->normalize($exception);
-                break;
-            }
-        }
+    //     // Recherche du normalizer approprié
+    //     foreach ($this->normalizers as $normalizer) {
+    //         if ($normalizer->supports($exception)) {
+    //             $data = $normalizer->normalize($exception);
+    //             break;
+    //         }
+    //     }
 
-        // Complète la réponse
-        $data ??= [
-            'status' => 500,
-            'detail' => 'Unhandled exception',
-        ];
+    //     // Complète la réponse
+    //     $data ??= [
+    //         'status' => 500,
+    //         'detail' => 'Unhandled exception',
+    //     ];
 
-        $responseData = [
-            'type'    => 'https://tools.ietf.org/html/rfc2616#section-10',
-            'message' => $exception->getMessage(),
-            'title'   => 'An error occurred',
-            ...$data,
-        ];
+    //     $responseData = [
+    //         'type'    => 'https://tools.ietf.org/html/rfc2616#section-10',
+    //         'message' => $exception->getMessage(),
+    //         'title'   => 'An error occurred',
+    //         ...$data,
+    //     ];
 
-        $event->setResponse(new JsonResponse($responseData, $data['status']));
-    }
+    //     $event->setResponse(new JsonResponse($responseData, $data['status']));
+    // }
 }

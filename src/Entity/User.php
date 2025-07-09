@@ -1,27 +1,28 @@
 <?php
 namespace App\Entity;
 
-use App\Dto\UserInputDto;
-use ApiPlatform\Metadata\Get;
-use ApiPlatform\Metadata\Post;
-use ApiPlatform\Metadata\Patch;
-use App\State\UserPostProcessor;
-use Doctrine\ORM\Mapping as ORM;
-use App\Repository\UserRepository;
 use ApiPlatform\Metadata\ApiResource;
+use ApiPlatform\Metadata\Get;
 use ApiPlatform\Metadata\GetCollection;
+use ApiPlatform\Metadata\Patch;
+use ApiPlatform\Metadata\Post;
 use App\Constante\SelfcareConst;
+use App\Dto\UserInputDto;
+use App\Dto\UserInputUpdateDto;
+use App\Repository\UserRepository;
+use App\State\UserPostProcessor;
 use App\Trait\CreatedTimeTrackableTrait;
-use Doctrine\Common\Collections\Collection;
 use Doctrine\Common\Collections\ArrayCollection;
-use Symfony\Component\Security\Core\User\UserInterface;
+use Doctrine\Common\Collections\Collection;
+use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
-use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
+use Symfony\Component\Security\Core\User\UserInterface;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 #[ORM\Entity(repositoryClass: UserRepository::class)]
-#[UniqueEntity('email', message: 'Cet email est déjà utilisé.')]
-#[UniqueEntity('login', message: 'Ce login est déjà utilisé.')]
+#[UniqueEntity('email', message: 'Cet email est déjà utilisé.', groups: ['update'])]
+#[UniqueEntity('login', message: 'Ce login est déjà utilisé.', groups: ['update'])]
 #[ApiResource(
     normalizationContext: ['groups' => [SelfcareConst::USER_READ]],
     denormalizationContext: ['groups' => [SelfcareConst::USER_WRITE]],
@@ -33,7 +34,7 @@ use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
             processor: UserPostProcessor::class
         ),
         new Patch(
-            input: UserInputDto::class,
+            input: UserInputUpdateDto::class,
             processor: UserPostProcessor::class
         ),
     ],

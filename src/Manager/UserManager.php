@@ -2,6 +2,7 @@
 namespace App\Manager;
 
 use App\Dto\UserInputDto;
+use App\Dto\UserInputUpdateDto;
 use App\Entity\Right;
 use App\Entity\Role;
 use App\Entity\User;
@@ -77,24 +78,24 @@ final class UserManager
         return $user;
     }
 
-    public function updateUser(User $user, UserInputDto $dto): User
+    public function updateUser(User $user, UserInputUpdateDto $dto): User
     {
         $user->setLogin($dto->login)
             ->setEmail($dto->email)
             ->setPhone($dto->phone)
-            ->setStatus($dto->status)
-            ->setLdapUser($dto->isLdapUser ?? false);
+            ->setStatus($dto->status);
 
-        if (! $user->isLdapUser() && !empty($dto->password)) {
+        if (! $user->isLdapUser() && ! empty($dto->password)) {
             $user->setPassword(
                 $this->passwordHasher->hashPassword($user, $dto->password)
             );
-        } else {
+        }
+        if ($user->isLdapUser()) {
             $this->userService->checkIsldapUser($dto->login);
         }
 
         // Validation
-        $violations = $this->validator->validate($user);
+        $violations = $this->validator->validate($user, null, ['update']);
         if (count($violations) > 0) {
             $messages = [];
             foreach ($violations as $violation) {
