@@ -19,10 +19,14 @@ final class UserPostProcessor implements ProcessorInterface
     public function process(mixed $data, Operation $operation, array $uriVariables = [], array $context = []): User
     {
         if ($data instanceof UserInputDto || $data instanceof UserInputUpdateDto) {
-            /** @var ?User $existingUser */
+            /** @var ?User $existingUser
+             */
             $existingUser = $context['previous_data'] ?? null;
 
             if ($existingUser) {
+                /**
+                 * @var UserInputUpdateDto $data
+                 */
                 return $this->userManager->updateUser($existingUser, $data);
             }
 
