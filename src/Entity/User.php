@@ -21,8 +21,8 @@ use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Serializer\Annotation\Groups;
 
 #[ORM\Entity(repositoryClass: UserRepository::class)]
-#[UniqueEntity('email', message: 'Cet email est déjà utilisé.', groups: ['update'])]
-#[UniqueEntity('login', message: 'Ce login est déjà utilisé.', groups: ['update'])]
+#[UniqueEntity('email', message: 'Cet email est déjà utilisé.')]
+#[UniqueEntity('login', message: 'Ce login est déjà utilisé.')]
 #[ApiResource(
     normalizationContext: ['groups' => [SelfcareConst::USER_READ]],
     denormalizationContext: ['groups' => [SelfcareConst::USER_WRITE]],
