@@ -95,7 +95,7 @@ final class UserManager
         }
 
         // Validation
-        $violations = $this->validator->validate($user, null, ['update']);
+        $violations = $this->validator->validate($user);
         if (count($violations) > 0) {
             $messages = [];
             foreach ($violations as $violation) {
