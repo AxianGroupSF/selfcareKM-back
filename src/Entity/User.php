@@ -88,9 +88,16 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\ManyToMany(targetEntity: Role::class, inversedBy: 'users')]
     private Collection $userRole;
 
+    /**
+     * @var Collection<int, Company>
+     */
+    #[ORM\ManyToMany(targetEntity: Company::class, inversedBy: 'users')]
+    private Collection $company;
+
     public function __construct()
     {
         $this->userRole = new ArrayCollection();
+        $this->company = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -235,6 +242,30 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function removeUserRole(Role $userRole): static
     {
         $this->userRole->removeElement($userRole);
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Company>
+     */
+    public function getCompany(): Collection
+    {
+        return $this->company;
+    }
+
+    public function addCompany(Company $company): static
+    {
+        if (!$this->company->contains($company)) {
+            $this->company->add($company);
+        }
+
+        return $this;
+    }
+
+    public function removeCompany(Company $company): static
+    {
+        $this->company->removeElement($company);
 
         return $this;
     }
