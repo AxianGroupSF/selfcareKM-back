@@ -44,7 +44,7 @@ final class UserManager
             $user->setPassword(null);
         }
 
-        $violations = $this->validator->validate($user);
+        $violations = $this->validator->validate($user, null, ['create']);
         if (count($violations) > 0) {
             $messages = [];
             foreach ($violations as $violation) {
@@ -80,6 +80,10 @@ final class UserManager
 
     public function updateUser(User $user, UserInputUpdateDto $dto): User
     {
+        if (! $this->em->contains($user)) {
+            $user = $this->em->getRepository(User::class)->find($user->getId());
+        }
+
         $user->setLogin($dto->login)
             ->setEmail($dto->email)
             ->setPhone($dto->phone)
@@ -92,6 +96,17 @@ final class UserManager
         }
         if ($user->isLdapUser()) {
             $this->userService->checkIsldapUser($dto->login);
+        }
+
+        // Unicité manuelle
+        $existingUserWithSameEmail = $this->em->getRepository(User::class)->findOneBy(['email' => $dto->email]);
+        if ($existingUserWithSameEmail && $existingUserWithSameEmail->getId() !== $user->getId()) {
+            throw new BadRequestException('Cet email est déjà utilisé.');
+        }
+
+        $existingUserWithSameLogin = $this->em->getRepository(User::class)->findOneBy(['login' => $dto->login]);
+        if ($existingUserWithSameLogin && $existingUserWithSameLogin->getId() !== $user->getId()) {
+            throw new BadRequestException('Ce login est déjà utilisé.');
         }
 
         // Validation
