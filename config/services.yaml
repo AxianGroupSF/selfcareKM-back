@@ -45,6 +45,10 @@ services:
     App\OpenApi\CustomOpenApiUserFactory:
         decorates: 'api_platform.openapi.factory'
 
+    App\OpenApi\OpenApiFactory:
+        decorates: 'api_platform.openapi.factory'
+        arguments: ['@App\OpenApi\OpenApiFactory.inner']
+
     App\Manager\UserManager: ~
 
     # add more service definitions when explicit configuration is needed
