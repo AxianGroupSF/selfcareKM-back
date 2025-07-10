@@ -18,7 +18,7 @@ class OpenApiFactory implements OpenApiFactoryInterface
         if ($pathItem) {
             $operation = $pathItem->getPatch();
             if ($operation instanceof Operation) {
-                $newOperation = $operation->withSummary('Updates companies linked to a user')
+                $newOperation = $operation->withSummary('Updates companies linked to a user (IT Manager)')
                     ->withDescription('This operation replaces all user companies.');
 
                 $openApi->getPaths()->addPath('/api/users/{id}/companies', $pathItem->withPatch($newOperation));
