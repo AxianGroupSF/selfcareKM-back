@@ -8,10 +8,8 @@ use Symfony\Component\Validator\Constraints as Assert;
 
 final class CompanyAssignmentDto
 {
-    #[Assert\NotBlank]
     #[Assert\All([
             new Assert\Type("int"),
-            new Assert\NotNull(),
         ])]
     #[Groups([SelfcareConst::USER_COMPANY_WRITE])]
     #[ApiProperty(example: [1, 2, 3])]
