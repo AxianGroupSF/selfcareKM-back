@@ -45,6 +45,7 @@ use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
             uriTemplate: '/users/{id}/companies',
             input: CompanyAssignmentDto::class,
             processor: UserCompanyAssignmentProcessor::class,
+            denormalizationContext: ['groups' => [SelfcareConst::USER_COMPANY_WRITE]],
         )
     ],
     inputFormats: ['json' => ['application/json']],

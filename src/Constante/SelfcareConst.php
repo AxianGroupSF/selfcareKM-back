@@ -10,4 +10,5 @@ class SelfcareConst
     const ROLE_READ           = "role:read";
     const ROLE_WRITE          = "role:write";
     const RIGHT_READ          = "right:read";
+    const USER_COMPANY_WRITE  = "user:company:write";
 }
