@@ -1,24 +1,26 @@
 <?php
 namespace App\Entity;
 
-use ApiPlatform\Metadata\ApiResource;
-use ApiPlatform\Metadata\Get;
-use ApiPlatform\Metadata\GetCollection;
-use ApiPlatform\Metadata\Patch;
-use ApiPlatform\Metadata\Post;
-use App\Constante\SelfcareConst;
 use App\Dto\UserInputDto;
+use ApiPlatform\Metadata\Get;
+use ApiPlatform\Metadata\Post;
+use ApiPlatform\Metadata\Patch;
 use App\Dto\UserInputUpdateDto;
-use App\Repository\UserRepository;
+use App\Constante\SelfcareConst;
 use App\State\UserPostProcessor;
-use App\Trait\CreatedTimeTrackableTrait;
-use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use App\Dto\CompanyAssignmentDto;
+use App\Repository\UserRepository;
+use ApiPlatform\Metadata\ApiResource;
+use ApiPlatform\Metadata\GetCollection;
+use App\Trait\CreatedTimeTrackableTrait;
+use Doctrine\Common\Collections\Collection;
+use App\State\UserCompanyAssignmentProcessor;
+use Doctrine\Common\Collections\ArrayCollection;
+use Symfony\Component\Serializer\Annotation\Groups;
+use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
-use Symfony\Component\Security\Core\User\UserInterface;
-use Symfony\Component\Serializer\Annotation\Groups;
 
 #[ORM\Entity(repositoryClass: UserRepository::class)]
 #[UniqueEntity('email', message: 'Cet email est déjà utilisé.', groups: ['create'])]
@@ -38,6 +40,12 @@ use Symfony\Component\Serializer\Annotation\Groups;
             processor: UserPostProcessor::class,
             read: true
         ),
+        new Patch(
+            name: 'update_companies',
+            uriTemplate: '/users/{id}/companies',
+            input: CompanyAssignmentDto::class,
+            processor: UserCompanyAssignmentProcessor::class,
+        )
     ],
     inputFormats: ['json' => ['application/json']],
     outputFormats: ['jsonld' => ['application/ld+json'], 'json' => ['application/json']],
