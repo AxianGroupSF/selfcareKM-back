@@ -2,18 +2,27 @@
 namespace App\Entity;
 
 use ApiPlatform\Metadata\ApiResource;
+use ApiPlatform\Metadata\Get;
+use ApiPlatform\Metadata\GetCollection;
 use ApiPlatform\Metadata\Patch;
+use ApiPlatform\Metadata\Post;
 use App\Constante\SelfcareConst;
 use App\Dto\MsisdnFleetAssignmentDto;
+use App\Entity\Bundle;
 use App\Repository\MsisdnFleetRepository;
 use App\State\MsisdnFleetAssignmentProcessor;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
 #[ORM\Entity(repositoryClass: MsisdnFleetRepository::class)]
+#[UniqueEntity('msisdn', message: 'Ce msisdn est déjà utilisé.')]
 #[ApiResource(
     operations: [
+        new Get(),
+        new GetCollection(),
+        new Post(),
         new Patch(
             name: 'update_msisdnfleet',
             uriTemplate: '/msisdnfleet/{id}/bundles',
