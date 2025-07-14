@@ -1,6 +1,7 @@
 <?php
 namespace App\Entity;
 
+use App\Entity\Company;
 use App\Dto\UserInputDto;
 use ApiPlatform\Metadata\Get;
 use ApiPlatform\Metadata\Post;

@@ -1,13 +1,30 @@
 <?php
-
 namespace App\Entity;
 
+use ApiPlatform\Metadata\ApiResource;
+use ApiPlatform\Metadata\Patch;
+use App\Constante\SelfcareConst;
+use App\Dto\MsisdnFleetAssignmentDto;
 use App\Repository\MsisdnFleetRepository;
+use App\State\MsisdnFleetAssignmentProcessor;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: MsisdnFleetRepository::class)]
+#[ApiResource(
+    operations: [
+        new Patch(
+            name: 'update_msisdnfleet',
+            uriTemplate: '/msisdnfleet/{id}/bundles',
+            input: MsisdnFleetAssignmentDto::class,
+            processor: MsisdnFleetAssignmentProcessor::class,
+            denormalizationContext: ['groups' => [SelfcareConst::MSISDN_FLEET_WRITE]],
+        ),
+    ],
+    inputFormats: ['json' => ['application/json']],
+    outputFormats: ['jsonld' => ['application/ld+json'], 'json' => ['application/json']],
+)]
 class MsisdnFleet
 {
     #[ORM\Id]
@@ -86,7 +103,7 @@ class MsisdnFleet
 
     public function addBundle(Bundle $bundle): static
     {
-        if (!$this->bundles->contains($bundle)) {
+        if (! $this->bundles->contains($bundle)) {
             $this->bundles->add($bundle);
         }
 

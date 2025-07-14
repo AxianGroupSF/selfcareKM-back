@@ -13,4 +13,5 @@ class SelfcareConst
     const USER_COMPANY_WRITE  = "user:company:write";
     const BUNDLE_READ         = "bundle:read";
     const BUNDLE_WRITE        = "bundle:write";
+    const MSISDN_FLEET_WRITE = "msisdn:fleet:write";
 }
