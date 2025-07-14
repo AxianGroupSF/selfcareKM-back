@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use App\Repository\MsisdnFleetRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: MsisdnFleetRepository::class)]
@@ -21,6 +23,17 @@ class MsisdnFleet
 
     #[ORM\Column]
     private ?float $rechargeMainAccount = null;
+
+    /**
+     * @var Collection<int, Bundle>
+     */
+    #[ORM\ManyToMany(targetEntity: Bundle::class, inversedBy: 'msisdnFleets')]
+    private Collection $bundles;
+
+    public function __construct()
+    {
+        $this->bundles = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -59,6 +72,30 @@ class MsisdnFleet
     public function setRechargeMainAccount(float $rechargeMainAccount): static
     {
         $this->rechargeMainAccount = $rechargeMainAccount;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Bundle>
+     */
+    public function getBundles(): Collection
+    {
+        return $this->bundles;
+    }
+
+    public function addBundle(Bundle $bundle): static
+    {
+        if (!$this->bundles->contains($bundle)) {
+            $this->bundles->add($bundle);
+        }
+
+        return $this;
+    }
+
+    public function removeBundle(Bundle $bundle): static
+    {
+        $this->bundles->removeElement($bundle);
 
         return $this;
     }

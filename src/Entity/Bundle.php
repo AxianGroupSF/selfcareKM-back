@@ -9,6 +9,8 @@ use ApiPlatform\Metadata\Post;
 use App\Constante\SelfcareConst;
 use App\Repository\BundleRepository;
 use App\Trait\CreatedOnlyTimeTrackableTrait;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Serializer\Annotation\Groups;
@@ -41,6 +43,17 @@ class Bundle
     #[ORM\Column(length: 255)]
     private ?string $name = null;
 
+    /**
+     * @var Collection<int, MsisdnFleet>
+     */
+    #[ORM\ManyToMany(targetEntity: MsisdnFleet::class, mappedBy: 'bundles')]
+    private Collection $msisdnFleets;
+
+    public function __construct()
+    {
+        $this->msisdnFleets = new ArrayCollection();
+    }
+
     public function getId(): ?int
     {
         return $this->id;
@@ -64,5 +77,32 @@ class Bundle
         if ($this->createdAt === null) {
             $this->createdAt = new \DateTimeImmutable();
         }
+    }
+
+    /**
+     * @return Collection<int, MsisdnFleet>
+     */
+    public function getMsisdnFleets(): Collection
+    {
+        return $this->msisdnFleets;
+    }
+
+    public function addMsisdnFleet(MsisdnFleet $msisdnFleet): static
+    {
+        if (!$this->msisdnFleets->contains($msisdnFleet)) {
+            $this->msisdnFleets->add($msisdnFleet);
+            $msisdnFleet->addBundle($this);
+        }
+
+        return $this;
+    }
+
+    public function removeMsisdnFleet(MsisdnFleet $msisdnFleet): static
+    {
+        if ($this->msisdnFleets->removeElement($msisdnFleet)) {
+            $msisdnFleet->removeBundle($this);
+        }
+
+        return $this;
     }
 }
