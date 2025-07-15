@@ -13,3 +13,9 @@ toggle_user:
     controller: App\Controller\UserController::toggleStatus
     methods: [PUT]
 
+toggle_msisdn_fleet:
+    path: /api/msisdnfleet/{action}/{id}
+    controller: App\Controller\MsisdnController::toggleStatus
+    methods: [PUT]
+
+
