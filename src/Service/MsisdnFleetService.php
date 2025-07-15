@@ -2,7 +2,7 @@
 namespace App\Service;
 
 use App\Entity\MsisdnFleet;
-use App\Exception\InvalidCompanyActionException;
+use App\Exception\InvalidMsisdnFleetActionException;
 use Doctrine\ORM\EntityManagerInterface;
 
 final class MsisdnFleetService
@@ -14,12 +14,12 @@ final class MsisdnFleetService
         private readonly EntityManagerInterface $entityManager
     ) {}
 
-    public function toggleStatus(string $action, MsisdnFleet $msisdnFleet): string | InvalidCompanyActionException
+    public function toggleStatus(string $action, MsisdnFleet $msisdnFleet): string | InvalidMsisdnFleetActionException
     {
         match ($action) {
             self::ACTION_ENABLE => $msisdnFleet->setStatus(true),
             self::ACTION_DISABLE => $msisdnFleet->setStatus(false),
-            default => throw new InvalidCompanyActionException($action),
+            default => throw new InvalidMsisdnFleetActionException($action),
         };
 
         $this->entityManager->flush();
