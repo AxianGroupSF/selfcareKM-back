@@ -53,9 +53,16 @@ class Company
     #[ORM\ManyToMany(targetEntity: User::class, mappedBy: 'company')]
     private Collection $users;
 
+    /**
+     * @var Collection<int, MsisdnFleet>
+     */
+    #[ORM\OneToMany(targetEntity: MsisdnFleet::class, mappedBy: 'company')]
+    private Collection $msisdnfleets;
+
     public function __construct()
     {
         $this->users = new ArrayCollection();
+        $this->msisdnfleets = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -141,6 +148,36 @@ class Company
     {
         if ($this->users->removeElement($user)) {
             $user->removeCompany($this);
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, MsisdnFleet>
+     */
+    public function getMsisdnfleets(): Collection
+    {
+        return $this->msisdnfleets;
+    }
+
+    public function addMsisdnfleet(MsisdnFleet $msisdnfleet): static
+    {
+        if (!$this->msisdnfleets->contains($msisdnfleet)) {
+            $this->msisdnfleets->add($msisdnfleet);
+            $msisdnfleet->setCompany($this);
+        }
+
+        return $this;
+    }
+
+    public function removeMsisdnfleet(MsisdnFleet $msisdnfleet): static
+    {
+        if ($this->msisdnfleets->removeElement($msisdnfleet)) {
+            // set the owning side to null (unless already changed)
+            if ($msisdnfleet->getCompany() === $this) {
+                $msisdnfleet->setCompany(null);
+            }
         }
 
         return $this;

@@ -56,6 +56,9 @@ class MsisdnFleet
     #[ORM\ManyToMany(targetEntity: Bundle::class, inversedBy: 'msisdnFleets')]
     private Collection $bundles;
 
+    #[ORM\ManyToOne(inversedBy: 'msisdnfleets')]
+    private ?Company $company = null;
+
     public function __construct()
     {
         $this->bundles = new ArrayCollection();
@@ -122,6 +125,18 @@ class MsisdnFleet
     public function removeBundle(Bundle $bundle): static
     {
         $this->bundles->removeElement($bundle);
+
+        return $this;
+    }
+
+    public function getCompany(): ?Company
+    {
+        return $this->company;
+    }
+
+    public function setCompany(?Company $company): static
+    {
+        $this->company = $company;
 
         return $this;
     }
