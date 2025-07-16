@@ -39,4 +39,170 @@ symfony serve
 
 
 
+# 🛠 Project Automation – Makefile Commands
+
+This project uses a **modular Makefile system** to simplify common development and operational tasks such as managing Docker containers, JWT key generation, and LDAP user operations.
+
+Each group of commands is defined in its own `.mk` file under the `make/` directory.
+
+---
+
+## 📖 Getting Started
+
+To view all available commands, simply run:
+
+```bash
+make help
+```
+
+You will see a list like this, grouped by category:
+
+```
+📦 Available commands:
+
+🔷 Docker
+  docker-down          Stop the LDAP containers (docker-compose down)
+  docker-logs          Show logs of the LDAP container
+  docker-up            Start the LDAP containers (docker-compose up -d)
+
+🔷 JWT
+  jwt-generate         Generate JWT keys into $(JWT_DIR)
+  jwt-reset            Delete and regenerate JWT keys
+
+🔷 LDAP
+  ldap-add-user        Add a user via LDIF (default: add-user.ldif)
+  ldap-list-users      List LDAP users (inetOrgPerson)
+```
+
+---
+
+## 🐳 Docker Commands
+
+| Command             | Description                                      |
+|---------------------|--------------------------------------------------|
+| `make docker-up`    | Start the LDAP Docker containers                 |
+| `make docker-down`  | Stop the LDAP Docker containers                  |
+| `make docker-logs`  | View logs from the LDAP container                |
+
+> ⚠️ The `docker-compose.yml` file is located at the root of the project, even though the commands live in `make/docker.mk`.
+
+---
+
+## 🔐 JWT Commands
+
+| Command              | Description                                     |
+|----------------------|-------------------------------------------------|
+| `make jwt-generate`  | Generate a new JWT key pair                     |
+| `make jwt-reset`     | Delete and regenerate the JWT keys              |
+
+> 🗝️ Keys are stored in the folder defined by `JWT_DIR` (configured in your `.env` file).
+
+---
+
+## 📇 LDAP Commands
+
+| Command                                | Description                                                        |
+|----------------------------------------|--------------------------------------------------------------------|
+| `make ldap-add-user`                   | Add a user from the default LDIF file (`add-user.ldif`)            |
+| `make ldap-add-user file=custom.ldif`  | Add a user from a specific LDIF file                               |
+| `make ldap-list-users`                 | List LDAP users with object class `inetOrgPerson`                  |
+
+> 🔐 LDAP connection requires environment variables defined in your `.env` file (see below).
+
+---
+
+## ⚙️ Environment Variables
+
+The following variables are required and should be defined in your `.env` or `.env.local` file:
+
+```env
+# LDAP configuration
+
+# JWT configuration
+JWT_DIR=config/jwt
+
+# DATABASE
+DATABASE_URL="mysql://root:root@127.0.0.1:3307/selfcareKM"
+
+# MESSENGER
+MESSENGER_TRANSPORT_DSN=doctrine://default?auto_setup=0
+
+# LDAP configuration
+LDAP_BASE_DN="dc=pulse,dc=local"
+LDAP_SEARCH_DN="cn=admin,dc=pulse,dc=local"
+LDAP_SEARCH_PASSWORD="admin"
+LDAP_HOST=127.0.0.1
+LDAP_PORT=389
+
+# JWT configuration
+JWT_SECRET_KEY="%kernel.project_dir%/config/jwt/private.pem"
+JWT_PUBLIC_KEY="%kernel.project_dir%/config/jwt/public.pem"
+JWT_PASSPHRASE=sdfjksfjlkfdsjkl
+
+# CORS
+CORS_ALLOW_ORIGIN="localhost:3000"
+
+```
+
+---
+
+## 📁 Make Project Structure
+
+```
+.
+├── Makefile
+├── docker-compose.yml
+├── .env
+├── make/
+│   ├── help.mk
+│   ├── docker.mk
+│   ├── jwt.mk
+│   ├── ldap.mk
+│   └── ldif/
+│       └── add-user.ldif
+|       └── add-new-user.ldif
+```
+
+---
+
+## 🧪 Usage Examples
+
+Add a user using the default LDIF file:
+
+```bash
+make ldap-add-user
+```
+
+Add a user using a custom LDIF file:
+
+```bash
+make ldap-add-user file=add-new-user.ldif
+```
+
+Generate JWT keys:
+
+```bash
+make jwt-generate
+```
+
+Restart LDAP containers:
+
+```bash
+make docker-down
+make docker-up
+```
+
+---
+
+## ✅ Tips
+
+- All `.mk` files must follow the format:
+  ```make
+  command-name: ## [Category] Description here
+  ```
+- These lines will be automatically parsed and shown in `make help`.
+- You can easily extend this setup with new categories (e.g., `db.mk`, `assets.mk`).
+
+---
+
 
