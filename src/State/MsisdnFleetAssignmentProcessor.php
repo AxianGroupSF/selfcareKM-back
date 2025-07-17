@@ -31,7 +31,7 @@ class MsisdnFleetAssignmentProcessor implements ProcessorInterface
         /** @var MsisdnFleet|null $msisdnFleet */
         $msisdnFleet = $this->em->getRepository(MsisdnFleet::class)->find($msisdnFleetId);
         if (! $msisdnFleet) {
-            throw new NotFoundHttpException("Bundle introuvable.");
+            throw new NotFoundHttpException("MsisdnFleet ID {$msisdnFleetId} introuvable.");
         }
 
         // On vide les bundles actuelles

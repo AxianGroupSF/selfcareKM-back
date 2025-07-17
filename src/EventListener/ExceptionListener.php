@@ -34,7 +34,7 @@ final class ExceptionListener
 
         // Complète la réponse
         $data ??= [
-            'status' => 500,
+            'status' => $exception->getCode(),
             'detail' => 'Unhandled exception',
         ];
 
