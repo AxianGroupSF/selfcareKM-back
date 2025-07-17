@@ -205,4 +205,15 @@ make docker-up
 
 ---
 
-
+## ✅ Sonar Metric
+[![Quality Gate Status](https://sonar-php.pulse.mg/api/project_badges/measure?project=SelfcareKM-back&metric=alert_status&token=ea073f7c49fa2ae4d77f5b81d48159e2f15eacf1)](https://sonar-php.pulse.mg/dashboard?id=SelfcareKM-back)
+[![Lines of Code](https://sonar-php.pulse.mg/api/project_badges/measure?project=SelfcareKM-back&metric=ncloc&token=ea073f7c49fa2ae4d77f5b81d48159e2f15eacf1)](https://sonar-php.pulse.mg/dashboard?id=SelfcareKM-back)
+[![Security Rating](https://sonar-php.pulse.mg/api/project_badges/measure?project=SelfcareKM-back&metric=security_rating&token=ea073f7c49fa2ae4d77f5b81d48159e2f15eacf1)](https://sonar-php.pulse.mg/dashboard?id=SelfcareKM-back)
+[![Maintainability Rating](https://sonar-php.pulse.mg/api/project_badges/measure?project=SelfcareKM-back&metric=sqale_rating&token=ea073f7c49fa2ae4d77f5b81d48159e2f15eacf1)](https://sonar-php.pulse.mg/dashboard?id=SelfcareKM-back)
+[![Reliability Rating](https://sonar-php.pulse.mg/api/project_badges/measure?project=SelfcareKM-back&metric=reliability_rating&token=ea073f7c49fa2ae4d77f5b81d48159e2f15eacf1)](https://sonar-php.pulse.mg/dashboard?id=SelfcareKM-back)
+[![Vulnerabilities](https://sonar-php.pulse.mg/api/project_badges/measure?project=SelfcareKM-back&metric=vulnerabilities&token=ea073f7c49fa2ae4d77f5b81d48159e2f15eacf1)](https://sonar-php.pulse.mg/dashboard?id=SelfcareKM-back)
+[![Bugs](https://sonar-php.pulse.mg/api/project_badges/measure?project=SelfcareKM-back&metric=bugs&token=ea073f7c49fa2ae4d77f5b81d48159e2f15eacf1)](https://sonar-php.pulse.mg/dashboard?id=SelfcareKM-back)
+[![Code Smells](https://sonar-php.pulse.mg/api/project_badges/measure?project=SelfcareKM-back&metric=code_smells&token=ea073f7c49fa2ae4d77f5b81d48159e2f15eacf1)](https://sonar-php.pulse.mg/dashboard?id=SelfcareKM-back)
+[![Duplicated Lines (%)](https://sonar-php.pulse.mg/api/project_badges/measure?project=SelfcareKM-back&metric=duplicated_lines_density&token=ea073f7c49fa2ae4d77f5b81d48159e2f15eacf1)](https://sonar-php.pulse.mg/dashboard?id=SelfcareKM-back)
+[![Coverage](https://sonar-php.pulse.mg/api/project_badges/measure?project=SelfcareKM-back&metric=coverage&token=ea073f7c49fa2ae4d77f5b81d48159e2f15eacf1)](https://sonar-php.pulse.mg/dashboard?id=SelfcareKM-back)
+[![Technical Debt](https://sonar-php.pulse.mg/api/project_badges/measure?project=SelfcareKM-back&metric=sqale_index&token=ea073f7c49fa2ae4d77f5b81d48159e2f15eacf1)](https://sonar-php.pulse.mg/dashboard?id=SelfcareKM-back)
