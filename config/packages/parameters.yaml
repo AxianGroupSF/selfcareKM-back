@@ -2,3 +2,4 @@ parameters:
     ldap_search_password: '%env(resolve:LDAP_SEARCH_PASSWORD)%'
     ldap_base_dn: '%env(resolve:LDAP_BASE_DN)%'
     ldap_search_dn: '%env(resolve:LDAP_SEARCH_DN)%'
+    activate_verif_period: '%env(resolve:ACTIVATE_VERIF_PERIOD)%'
