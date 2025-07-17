@@ -55,12 +55,9 @@ services:
     App\Manager\UserManager: ~
 
     App\EventListener\MsisdnFleetDateListener:
-        autowire: true
-        autoconfigure: false
         tags:
-            - { name: doctrine.orm.entity_listener, event: prePersist, entity: App\Entity\MsisdnFleet, method: prePersist }
-            - { name: doctrine.orm.entity_listener, event: preUpdate, entity: App\Entity\MsisdnFleet, method: preUpdate }
-
+            - { name: doctrine.event_listener, event: prePersist }
+            - { name: doctrine.event_listener, event: preUpdate }
 
     # add more service definitions when explicit configuration is needed
     # please note that last definitions always *replace* previous ones
