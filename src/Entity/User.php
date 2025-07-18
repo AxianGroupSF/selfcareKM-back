@@ -279,4 +279,17 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
         return $this;
     }
+
+    public function hasRight(string $rightCode): bool
+    {
+        foreach ($this->getUserRole() as $role) {
+            foreach ($role->getRights() as $right) {
+                if ($right->getCode() === $rightCode) {
+                    return true;
+                }
+            }
+        }
+
+        return false;
+    }
 }
