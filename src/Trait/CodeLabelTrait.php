@@ -11,6 +11,7 @@ trait CodeLabelTrait
     #[ORM\Column(type: 'string', length: 255, unique: true)]
     private string $code;
 
+    #[Groups([SelfcareConst::ROLE_READ])]
     #[ORM\Column(type: 'string', length: 255, unique: true)]
     private string $label;
 
