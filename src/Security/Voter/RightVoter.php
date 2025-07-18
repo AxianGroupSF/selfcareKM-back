@@ -21,6 +21,11 @@ class RightVoter extends Voter
             return false;
         }
 
-        return $user->hasRight($attribute);
+        try {
+            return $user->hasRight($attribute);
+        } catch (\Throwable $e) {
+            // TEMPORAIRE : Log ou dump pour comprendre
+            throw new \RuntimeException('Erreur dans hasRight(): ' . $e->getMessage(), 0, $e);
+        }
     }
 }
