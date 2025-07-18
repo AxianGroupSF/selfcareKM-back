@@ -81,7 +81,8 @@ readonly class SelfcareLdapUserProvider implements UserProviderInterface
         $this->ldap->bind($this->parameterBag->get('ldap_search_dn'), $this->parameterBag->get('ldap_search_password'));
         $this->logger->info('<info>Connexion au serveur LDAP réussie.</info>');
 
-        $query   = $this->ldap->query($this->parameterBag->get('ldap_base_dn'), '(sAMAccountName=' . $identifier . ')');
+        $filterAttribute = $this->parameterBag->get('ldap_filter_attribute');
+        $query   = $this->ldap->query($this->parameterBag->get('ldap_base_dn'), "($filterAttribute=$identifier)");
         $results = $query->execute();
         if ($results->count() <= 0) {
             throw new BadRequestException(SelfcareConst::INVALID_CREDENTIALS);

@@ -1,0 +1,39 @@
+# description: 'Run SonarQube analysis on code changes'
+# icon: 'sonarqube'
+# author: 'SelfcareKM'
+# repository: 'github.com/SelfcareKM/SelfcareKM-back'
+# labels: ['sonarqube', 'analysis', 'ci']
+
+name: SonarQube Analysis
+
+on:
+  push:
+    branches:
+      - main
+      - trunk
+      - features/feat-ci
+      - 'releases/*'
+  pull_request:
+    branches: [ "main" ]
+  workflow_dispatch:
+
+permissions:
+  pull-requests: read # allows SonarQube to decorate PRs with analysis results
+
+jobs:
+  Analysis:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v3
+      - name: Analyze with SonarQube
+        uses: SonarSource/sonarqube-scan-action@v5.2.0
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+          SONAR_HOST_URL: ${{ secrets.SONAR_HOST_URL }}
+        with:
+          args: >
+            -Dsonar.projectKey="SelfcareKM-back"
+            -Dsonar.sources=src
+            -Dsonar.projectVersion=${{ github.sha }}

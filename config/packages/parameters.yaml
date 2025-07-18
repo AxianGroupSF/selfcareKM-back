@@ -3,3 +3,4 @@ parameters:
     ldap_base_dn: '%env(resolve:LDAP_BASE_DN)%'
     ldap_search_dn: '%env(resolve:LDAP_SEARCH_DN)%'
     activate_verif_period: '%env(resolve:ACTIVATE_VERIF_PERIOD)%'
+    ldap_filter_attribute: '%env(resolve:LDAP_FILTER_ATTRIBUTE)%'

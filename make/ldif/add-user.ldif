@@ -1,0 +1,7 @@
+dn: uid=john,dc=pulse,dc=local
+objectClass: inetOrgPerson
+cn: Dev pulse
+sn: Dev
+uid: dev
+mail: dev@pulse.local
+userPassword: dev

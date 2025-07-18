@@ -46,8 +46,10 @@ class TestLdapConnectionCommand extends Command
         try {
             $this->ldap->bind($this->parameterBag->get('ldap_search_dn'), $this->parameterBag->get('ldap_search_password'));
             $output->writeln('<info>Connection au serveur ldap en success !</info>');
+            
+            $filterAttribute = $this->parameterBag->get('ldap_filter_attribute');
+            $query = $this->ldap->query($this->parameterBag->get('ldap_base_dn'), "($filterAttribute=$username)");
 
-            $query = $this->ldap->query($this->parameterBag->get('ldap_base_dn'), '(sAMAccountName=' . $username . ')');
             $results = $query->execute();
             if ($results->count() <= 0) {
                 throw new NotFoundHttpException('Utilisateur introuvable !');
