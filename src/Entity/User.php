@@ -1,37 +1,39 @@
 <?php
 namespace App\Entity;
 
-use App\Entity\Company;
-use App\Dto\UserInputDto;
-use ApiPlatform\Metadata\Get;
-use ApiPlatform\Metadata\Post;
-use ApiPlatform\Metadata\Patch;
-use App\Dto\UserInputUpdateDto;
-use App\Constante\SelfcareConst;
-use App\State\UserPostProcessor;
-use Doctrine\ORM\Mapping as ORM;
-use App\Dto\CompanyAssignmentDto;
-use App\Repository\UserRepository;
 use ApiPlatform\Metadata\ApiResource;
+use ApiPlatform\Metadata\Get;
 use ApiPlatform\Metadata\GetCollection;
-use App\Trait\CreatedTimeTrackableTrait;
-use Doctrine\Common\Collections\Collection;
+use ApiPlatform\Metadata\Patch;
+use ApiPlatform\Metadata\Post;
+use App\Constante\SelfcareConst;
+use App\Dto\CompanyAssignmentDto;
+use App\Dto\UserInputDto;
+use App\Dto\UserInputUpdateDto;
+use App\Entity\Company;
+use App\Repository\UserRepository;
 use App\State\UserCompanyAssignmentProcessor;
+use App\State\UserPostProcessor;
+use App\Trait\CreatedTimeTrackableTrait;
 use Doctrine\Common\Collections\ArrayCollection;
-use Symfony\Component\Serializer\Annotation\Groups;
-use Symfony\Component\Security\Core\User\UserInterface;
+use Doctrine\Common\Collections\Collection;
+use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
+use Symfony\Component\Security\Core\User\UserInterface;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 #[ORM\Entity(repositoryClass: UserRepository::class)]
 #[UniqueEntity('email', message: 'Cet email est déjà utilisé.', groups: ['create'])]
-#[UniqueEntity('login', message: 'Ce login est déjà utilisé.',  groups: ['create'])]
+#[UniqueEntity('login', message: 'Ce login est déjà utilisé.', groups: ['create'])]
 #[ApiResource(
     normalizationContext: ['groups' => [SelfcareConst::USER_READ]],
     denormalizationContext: ['groups' => [SelfcareConst::USER_WRITE]],
     operations: [
         new Get(),
-        new GetCollection(),
+        new GetCollection(
+            security: "is_granted('READ_USER')"
+        ),
         new Post(
             input: UserInputDto::class,
             processor: UserPostProcessor::class
@@ -47,7 +49,7 @@ use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
             input: CompanyAssignmentDto::class,
             processor: UserCompanyAssignmentProcessor::class,
             denormalizationContext: ['groups' => [SelfcareConst::USER_COMPANY_WRITE]],
-        )
+        ),
     ],
     inputFormats: ['json' => ['application/json']],
     outputFormats: ['jsonld' => ['application/ld+json'], 'json' => ['application/json']],
@@ -107,7 +109,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function __construct()
     {
         $this->userRole = new ArrayCollection();
-        $this->company = new ArrayCollection();
+        $this->company  = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -266,7 +268,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
     public function addCompany(Company $company): static
     {
-        if (!$this->company->contains($company)) {
+        if (! $this->company->contains($company)) {
             $this->company->add($company);
         }
 
