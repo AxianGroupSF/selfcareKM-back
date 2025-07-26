@@ -23,6 +23,7 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
         new Get(),
         new GetCollection(),
         new Post(),
+        new Patch(),
         new Patch(
             name: 'update_msisdnfleet',
             uriTemplate: '/msisdnfleet/{id}/bundles',
