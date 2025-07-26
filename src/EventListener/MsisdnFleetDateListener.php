@@ -2,9 +2,9 @@
 namespace App\EventListener;
 
 use App\Entity\MsisdnFleet;
+use App\Exception\AccessDeniedHttpException;
 use App\Helper\PeriodValidator;
 use Doctrine\Persistence\Event\LifecycleEventArgs;
-use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 
 class MsisdnFleetDateListener
 {
